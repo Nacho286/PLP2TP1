@@ -50,10 +50,10 @@ hojas::Arbol23 a b->[a]
 hojas = foldA23 (\ l -> [l]) (\ l1 l2 l3->l2++l3) ( \ l1 l2 l3 l4 l5 ->l3++l4++l5)
 
 esHoja::Arbol23 a b->Bool
-esHoja = foldA23 (const True) (const False) (const False)
+esHoja = foldA23 (\h -> True) (\i h1 h2 -> False) (\i1 i2 h1 h2 h3 -> False)
 
 mapA23::(a->c)->(b->d)->Arbol23 a b->Arbol23 c d
-mapA23 f g = foldA23 (\h -> (Hoja f h)) (\i h1 h2 -> (Dos (g i) h1 h2)) (\i1 i2 h1 h2 h3 -> (Tres (g i1) (g i2) h1 h2 h3))
+mapA23 f g = foldA23 (\h -> (Hoja (f h))) (\i h1 h2 -> (Dos (g i) h1 h2)) (\i1 i2 h1 h2 h3 -> (Tres (g i1) (g i2) h1 h2 h3))
 
 --Ejemplo de uso de mapA23.
 --Incrementa en 1 el valor de las hojas.
