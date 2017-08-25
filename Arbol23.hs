@@ -85,7 +85,7 @@ truncar =(\def num arbol -> foldNat (\num-> unaHoja def) (\n rec -> armando arbo
 --Evalúa las funciones tomando los valores de los hijos como argumentos.
 --En el caso de que haya 3 hijos, asocia a izquierda.
 evaluar::Arbol23 a (a->a->a)->a
-evaluar = undefined
+evaluar = foldA23 id (\v rec1 rec2 -> v rec1 rec2) (\v1 v2 rec1 rec2 rec3-> v2 (v1 rec1 rec2) rec3)
 
 --Ejemplo:
 --evaluar (truncar 0 6 arbolito3) = 22 = (1*2-3)+(2*3-4)+(3*4-5)+(4*5-6)
