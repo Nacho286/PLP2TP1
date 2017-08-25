@@ -21,6 +21,9 @@ dicc2 = definirVarias [("inicio","casa"),("auto","flores"),("calle","auto"),("ca
 dicc3::Diccionario Int String
 dicc3 = definirVarias [(0,"Hola"),(-10,"Chau"),(15,"Felicidades"),(2,"etc."),(9,"a")] (vacio (\x y->x `mod` 5 < y `mod` 5))
 
+--arboles de prueba
+arbol1 = Tres 'A' 'B' (Hoja 1) (Dos 'C' (Hoja 2) (Hoja 3)) (Tres 'D' 'E' (Dos 'F' (Hoja 4) (Hoja 5)) (Hoja 6) (Hoja 7))
+
 --Ejecución de los tests
 main :: IO Counts
 main = do runTestTT allTests

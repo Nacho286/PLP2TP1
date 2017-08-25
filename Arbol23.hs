@@ -59,12 +59,28 @@ mapA23 f g = foldA23 (\h -> (Hoja (f h))) (\i h1 h2 -> (Dos (g i) h1 h2)) (\i1 i
 --Incrementa en 1 el valor de las hojas.
 incrementarHojas::Num a =>Arbol23 a b->Arbol23 a b
 incrementarHojas = mapA23 (+1) id
-
-
+        
 --Trunca el árbol hasta un determinado nivel. Cuando llega a 0, reemplaza el resto del árbol por una hoja con el valor indicado.
 --Funciona para árboles infinitos.
+
+--Para truncar se utilizo la recursión por los naturales
+foldNat::Num a => Eq a =>(a -> b) -> (a -> b -> b) -> a -> b
+foldNat = (\fBase fRec n -> case n of
+    0 -> fBase 0
+    n -> fRec n (foldNat fBase fRec (n-1)) )
+
+--Crea una arbol23 Hoja
+unaHoja::a->Arbol23 a b
+unaHoja = \a -> (Hoja a)
+
+--trunco
 truncar::a->Integer->Arbol23 a b->Arbol23 a b
-truncar = undefined
+truncar =(\def num arbol -> foldNat (\num-> unaHoja def) (\n rec -> armando arbol rec n def) num )
+    where
+        armando (Hoja v) rec n def = Hoja v
+        armando (Dos v h1 h2) rec n def = Dos v (truncar def (n-1) h1) (truncar def (n-1) h2)
+        armando (Tres v1 v2 h1 h2 h3) rec n def = Tres v1 v2 (truncar def (n-1) h1) (truncar def (n-1) h2) (truncar def (n-1) h3)
+
 
 --Evalúa las funciones tomando los valores de los hijos como argumentos.
 --En el caso de que haya 3 hijos, asocia a izquierda.
