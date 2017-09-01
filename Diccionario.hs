@@ -76,7 +76,7 @@ vacio::Comp clave->Diccionario clave valor
 vacio c= Dicc{cmp = c, estructura = Nothing}
 
 definir::clave->valor->Diccionario clave valor->Diccionario clave valor
-definir c v d = Dicc{cmp = cmp d, estructura =  (insertar c v (cmp d) (estructura d))}
+definir c v d = if isNothing (estructura d) then Dicc{cmp = cmp d, estructura = Just(Hoja(c,v))} else Dicc{cmp = cmp d, estructura = Just(insertar c v (cmp d) (fromJust (estructura d)))}
 
 obtener::Eq clave=>clave->Diccionario clave valor->Maybe valor
 obtener = undefined
