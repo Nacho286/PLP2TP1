@@ -82,7 +82,7 @@ obtener::Eq clave=>clave->Diccionario clave valor->Maybe valor
 obtener = undefined
 
 claves::Diccionario clave valor->[clave]
-claves d = map (\x->fst(x)) (hojas (fromJust (estructura d))) ++ internos (fromJust(estructura d))
+claves d = if  isNothing(estructura d) then [] else map (\x->fst(x)) (hojas (fromJust (estructura d))) ++ internos (fromJust(estructura d))
 
 {- Diccionarios de prueba: -}
 
