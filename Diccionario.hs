@@ -79,7 +79,10 @@ definir::clave->valor->Diccionario clave valor->Diccionario clave valor
 definir c v d = if isNothing (estructura d) then Dicc{cmp = cmp d, estructura = Just(Hoja(c,v))} else Dicc{cmp = cmp d, estructura = Just(insertar c v (cmp d) (fromJust (estructura d)))}
 
 obtener::Eq clave=>clave->Diccionario clave valor->Maybe valor
-obtener = undefined
+obtener cl d = if isNothing (estructura d) then Nothing else buscar cl (cmp d) (fromJust(estructura d))
+
+buscar ::Eq clave=> clave -> Comp clave -> Arbol23 (clave,valor) clave -> Maybe valor
+buscar cl comp = foldA23 (\x -> if fst(x)==cl then Just(snd(x)) else Nothing) (\x rec1 rec2 -> if comp cl x then rec1 else rec2) (\ x1 x2 rec1 rec2 rec3 -> if comp cl x1 then rec1 else (if comp cl x2 then rec2 else rec3))
 
 claves::Diccionario clave valor->[clave]
 claves d = if  isNothing(estructura d) then [] else map (\x->fst(x)) (hojas (fromJust (estructura d))) ++ internos (fromJust(estructura d))
