@@ -95,7 +95,7 @@ busquedaDelTesoro x f dicc = encontrar f (generarLista x dicc)
 encontrar:: (a->Bool)->[(a,Maybe a)]->Maybe a
 encontrar f = foldr (\x recu -> if (f fst(x)) || (isNothing snd(x)) then snd(x) else recu) Nothing
 
-generarLista::  (a,Maybe a)-> Diccionario a a -> [(a,Maybe a)]
+generarLista::  a-> Diccionario a a -> [(a,Maybe a)]
 generarLista x dicc = iterate (\(z,y)->(y,obtener y dicc)) (x,obtener x dicc)
 
 {- Diccionarios de prueba: -}
