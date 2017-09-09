@@ -87,6 +87,17 @@ buscar cl comp = foldA23 (\x -> if fst(x)==cl then Just(snd(x)) else Nothing) (\
 claves::Diccionario clave valor->[clave]
 claves d = if  isNothing(estructura d) then [] else map (\x->fst(x)) (hojas (fromJust (estructura d))) ++ internos (fromJust(estructura d))
 
+busquedaDelTesoro::Eq a=>a−>(a−>Bool)−>Diccionario a a−>Maybe a
+busquedaDelTesoro x f dicc = encontrar f (generarLista x dicc)
+
+{- Funciones auxiliares: -}
+
+encontrar:: (a->Bool)->[(a,Maybe a)]->Maybe a
+encontrar f = foldr (\x recu -> if (f fst(x)) || (isNothing snd(x)) then snd(x) else recu) Nothing
+
+generarLista::  (a,Maybe a)-> Diccionario a a -> [(a,Maybe a)]
+generarLista x dicc = iterate (\(z,y)->(y,obtener y dicc)) (x,obtener x dicc)
+
 {- Diccionarios de prueba: -}
 
 dicc1::Diccionario Int String
