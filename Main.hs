@@ -33,7 +33,8 @@ dicc3 = definirVarias [(0,"Hola"),(-10,"Chau"),(15,"Felicidades"),(2,"etc."),(9,
 dicc4::Diccionario String String
 dicc4 = definirVarias [("0","Hola"),("10","Chau"),("15","Felicidades"),("2","etc."),("9","a")] (vacio (<))
 
-
+diccVacio::Diccionario String String
+diccVacio = (vacio (<))
 
 --arboles de prueba
 arbol1 = Tres 'A' 'B' (Hoja 1) (Dos 'C' (Hoja 2) (Hoja 3)) (Tres 'D' 'E' (Dos 'F' (Hoja 4) (Hoja 5)) (Hoja 6) (Hoja 7))
@@ -82,11 +83,15 @@ testsEj7 = test [
   ]
 
 testsEj8 = test [
-  0 ~=? 0 --Cambiar esto por tests verdaderos.
+  Just "etc." ~=? obtener 2 dicc1,
+  Just "ropero" ~=? obtener "escalera" dicc2,
+  Nothing ~=? obtener 25 dicc3
   ]
 
 testsEj9 = test [
-  0 ~=? 0 --Cambiar esto por tests verdaderos.
+  [-10,0,2,9,15] ~=? claves dicc1,
+  ["auto","calle","casa","escalera","inicio","ropero"] ~=? claves dicc2,
+  [] ~=? claves diccVacio
   ]
 
 testsEj10 = test [
