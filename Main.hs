@@ -6,7 +6,6 @@ import Test.HUnit
 --Este módulo sirve para utilizar el diccionario sin acceder a su estructura interna. Pueden agregar otras funciones o casos de prueba.
 
 {- Función a implementar. -}
-
 búsquedaDelTesoro::Eq a=>a->(a->Bool)->Diccionario a a->Maybe a
 búsquedaDelTesoro x f dicc = encontrar f (generarLista x dicc)
 
@@ -17,7 +16,6 @@ encontrar f = foldr (\x recu -> if isNothing x then Nothing else (if  f (fromJus
 
 generarLista::  Eq a => a-> Diccionario a a -> [Maybe a]
 generarLista x dicc = iterate (\y-> if isNothing y then Nothing else obtener (fromJust y) dicc) (Just(x))
-
 
 {- Diccionarios de prueba: -}
 
@@ -91,11 +89,13 @@ testsEj8 = test [
 testsEj9 = test [
   [-10,0,2,9,15] ~=? claves dicc1,
   ["auto","calle","casa","escalera","inicio","ropero"] ~=? claves dicc2,
+  [15,-10,0,2,9] ~=? claves dicc3,
   [] ~=? claves diccVacio
   ]
 
 testsEj10 = test [
   Just "alfajor" ~=? búsquedaDelTesoro "inicio" ((=='a').head) dicc2,
   Just "Chau" ~=? búsquedaDelTesoro "10" ((=='C').head) dicc4,
-  Nothing ~=? búsquedaDelTesoro "10" ((=='F').head) dicc4
+  Nothing ~=? búsquedaDelTesoro "10" ((=='F').head) dicc4,
+  Just "flores" ~=? búsquedaDelTesoro "calle" ((=='f').head) dicc2
   ]
