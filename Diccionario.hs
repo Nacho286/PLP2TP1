@@ -85,18 +85,7 @@ buscar ::Eq clave=> clave -> Comp clave -> Arbol23 (clave,valor) clave -> Maybe 
 buscar cl comp = foldA23 (\x -> if fst(x)==cl then Just(snd(x)) else Nothing) (\x rec1 rec2 -> if comp cl x then rec1 else rec2) (\ x1 x2 rec1 rec2 rec3 -> if comp cl x1 then rec1 else (if comp cl x2 then rec2 else rec3))
 
 claves::Diccionario clave valor->[clave]
-claves d = if  isNothing(estructura d) then [] else map (\x->fst(x)) (hojas (fromJust (estructura d))) ++ internos (fromJust(estructura d))
-
-busquedaDelTesoro::Eq a=> a -> (a -> Bool) -> Diccionario a a -> Maybe a
-busquedaDelTesoro x f dicc = encontrar f (generarLista x dicc)
-
-{- Funciones auxiliares: -}
-
-encontrar:: (a->Bool)->[Maybe(a,Maybe a)]->Maybe a
-encontrar f = foldr (\x recu -> if (isNothing x) || (isNothing (snd(fromJust x))) then Nothing else (if  f (fst(fromJust x)) then snd(fromJust x) else recu)) Nothing
-
-generarLista::  Eq a => a-> Diccionario a a -> [Maybe (a,Maybe a)]
-generarLista x dicc = iterate (\y-> if (isNothing y) || (isNothing (snd(fromJust y))) then Nothing else Just(fromJust (snd(fromJust y)),obtener (fromJust(snd(fromJust y))) dicc)) (Just(x,obtener x dicc))
+claves d = if  isNothing(estructura d) then [] else map (\x->fst(x)) (hojas (fromJust (estructura d)))
 
 {- Diccionarios de prueba: -}
 

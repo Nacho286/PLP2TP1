@@ -8,7 +8,16 @@ import Test.HUnit
 {- Función a implementar. -}
 
 búsquedaDelTesoro::Eq a=>a->(a->Bool)->Diccionario a a->Maybe a
-búsquedaDelTesoro = undefined
+búsquedaDelTesoro x f dicc = encontrar f (generarLista x dicc)
+
+{- Funciones auxiliares: -}
+
+encontrar:: (a->Bool)->[Maybe a]->Maybe a
+encontrar f = foldr (\x recu -> if isNothing x then Nothing else (if  f (fromJust x)  then x else recu)) Nothing
+
+generarLista::  Eq a => a-> Diccionario a a -> [Maybe a]
+generarLista x dicc = iterate (\y-> if isNothing y then Nothing else obtener (fromJust y) dicc) (Just(x))
+
 
 {- Diccionarios de prueba: -}
 
@@ -20,6 +29,11 @@ dicc2 = definirVarias [("inicio","casa"),("auto","flores"),("calle","auto"),("ca
 
 dicc3::Diccionario Int String
 dicc3 = definirVarias [(0,"Hola"),(-10,"Chau"),(15,"Felicidades"),(2,"etc."),(9,"a")] (vacio (\x y->x `mod` 5 < y `mod` 5))
+
+dicc4::Diccionario String String
+dicc4 = definirVarias [("0","Hola"),("10","Chau"),("15","Felicidades"),("2","etc."),("9","a")] (vacio (<))
+
+
 
 --arboles de prueba
 arbol1 = Tres 'A' 'B' (Hoja 1) (Dos 'C' (Hoja 2) (Hoja 3)) (Tres 'D' 'E' (Dos 'F' (Hoja 4) (Hoja 5)) (Hoja 6) (Hoja 7))
@@ -76,5 +90,7 @@ testsEj9 = test [
   ]
 
 testsEj10 = test [
-  Just "alfajor" ~=? búsquedaDelTesoro "inicio" ((=='a').head) dicc2
+  Just "alfajor" ~=? búsquedaDelTesoro "inicio" ((=='a').head) dicc2,
+  Just "Chau" ~=? búsquedaDelTesoro "10" ((=='C').head) dicc4,
+  Nothing ~=? búsquedaDelTesoro "10" ((=='F').head) dicc4
   ]
