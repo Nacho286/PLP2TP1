@@ -73,11 +73,11 @@ testsEj5 = test [
   ]
 
 testsEj6 = test [
-  0 ~=? 0 --Cambiar esto por tests verdaderos.
+  [] ~=? claves diccVacio
   ]
 
 testsEj7 = test [
-  0 ~=? 0 --Cambiar esto por tests verdaderos.
+  2 ~=? length (claves(definir 2 "a" (definir 4 "j" (vacio (<)))))
   ]
 
 testsEj8 = test [
@@ -89,8 +89,7 @@ testsEj8 = test [
 testsEj9 = test [
   [-10,0,2,9,15] ~=? claves dicc1,
   ["auto","calle","casa","escalera","inicio","ropero"] ~=? claves dicc2,
-  [15,-10,0,2,9] ~=? claves dicc3,
-  [] ~=? claves diccVacio
+  [15,-10,0,2,9] ~=? claves dicc3
   ]
 
 testsEj10 = test [
