@@ -50,7 +50,10 @@ hojas::Arbol23 a b->[a]
 hojas = foldA23 (\ l -> [l]) (\ l1 l2 l3->l2++l3) ( \ l1 l2 l3 l4 l5 ->l3++l4++l5)
 
 esHoja::Arbol23 a b->Bool
-esHoja = foldA23 (\h -> True) (\i h1 h2 -> False) (\i1 i2 h1 h2 h3 -> False)
+esHoja arbol = case  arbol of
+  (Hoja a) -> True
+  (Dos l a1 a2) -> False
+  (Tres l1 l2 a1 a2 a3) -> False
 
 mapA23::(a->c)->(b->d)->Arbol23 a b->Arbol23 c d
 mapA23 f g = foldA23 (\h -> (Hoja (f h))) (\i h1 h2 -> (Dos (g i) h1 h2)) (\i1 i2 h1 h2 h3 -> (Tres (g i1) (g i2) h1 h2 h3))
@@ -59,7 +62,7 @@ mapA23 f g = foldA23 (\h -> (Hoja (f h))) (\i h1 h2 -> (Dos (g i) h1 h2)) (\i1 i
 --Incrementa en 1 el valor de las hojas.
 incrementarHojas::Num a =>Arbol23 a b->Arbol23 a b
 incrementarHojas = mapA23 (+1) id
-        
+
 --Trunca el árbol hasta un determinado nivel. Cuando llega a 0, reemplaza el resto del árbol por una hoja con el valor indicado.
 --Funciona para árboles infinitos.
 

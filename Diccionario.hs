@@ -73,17 +73,23 @@ definirVarias = (flip.foldr.uncurry) definir
 {- Funciones a implementar. -}
 
 vacio::Comp clave->Diccionario clave valor
-vacio c= Dicc{cmp = c, estructura = Nothing}
+vacio c= Dicc c Nothing
 
 definir::clave->valor->Diccionario clave valor->Diccionario clave valor
-definir c v d = if isNothing (estructura d) then Dicc{cmp = cmp d, estructura = Just(Hoja(c,v))} else Dicc{cmp = cmp d, estructura = Just(insertar c v (cmp d) (fromJust (estructura d)))}
+definir c v d = if isNothing (estructura d) then Dicc (cmp d) (Just(Hoja(c,v))) else Dicc (cmp d) dicc
+ where
+  dicc=(Just(insertar c v (cmp d) (fromJust (estructura d))))
 
 --Debido a la evalucion lazy solo se va a recorrer una rama, ya que en los if de la funcion "buscar" solo se va a computar la recursion que se necesaria
 obtener::Eq clave=>clave->Diccionario clave valor->Maybe valor
-obtener cl d = if isNothing (estructura d) then Nothing else buscar cl (cmp d) (fromJust(estructura d))
+obtener cl d = (>>=) (estructura d) (\x->buscar cl (cmp d) x)
 
 buscar ::Eq clave=> clave -> Comp clave -> Arbol23 (clave,valor) clave -> Maybe valor
-buscar cl comp = foldA23 (\x -> if fst(x)==cl then Just(snd(x)) else Nothing) (\x rec1 rec2 -> if comp cl x then rec1 else rec2) (\ x1 x2 rec1 rec2 rec3 -> if comp cl x1 then rec1 else (if comp cl x2 then rec2 else rec3))
+buscar cl comp = foldA23 f1 f2 f3
+ where
+  f1 = \x -> if fst(x)==cl then Just(snd(x)) else Nothing
+  f2 = \x rec1 rec2 -> if comp cl x then rec1 else rec2
+  f3 = \ x1 x2 rec1 rec2 rec3 -> if comp cl x1 then rec1 else (if comp cl x2 then rec2 else rec3)
 
 claves::Diccionario clave valor->[clave]
 claves d = if  isNothing(estructura d) then [] else map (\x->fst(x)) (hojas (fromJust (estructura d)))

@@ -12,10 +12,10 @@ búsquedaDelTesoro x f dicc = encontrar f (generarLista x dicc)
 {- Funciones auxiliares: -}
 
 encontrar:: (a->Bool)->[Maybe a]->Maybe a
-encontrar f = foldr (\x recu -> if isNothing x then Nothing else (if  f (fromJust x)  then x else recu)) Nothing
+encontrar f =foldr (\x recu -> (>>=) x (\y -> if  f y  then Just y else recu)) Nothing
 
 generarLista::  Eq a => a-> Diccionario a a -> [Maybe a]
-generarLista x dicc = iterate (\y-> if isNothing y then Nothing else obtener (fromJust y) dicc) (Just(x))
+generarLista x dicc = iterate (\y->(>>=) y (\z -> obtener z dicc )) (Just(x))
 
 {- Diccionarios de prueba: -}
 
