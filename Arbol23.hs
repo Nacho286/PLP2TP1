@@ -78,11 +78,11 @@ unaHoja = \a -> (Hoja a)
 
 --trunco
 truncar::a->Integer->Arbol23 a b->Arbol23 a b
-truncar =(\def num arbol -> foldNat (\num-> unaHoja def) (\n rec -> armando arbol rec n def) num )
+truncar def num arbol =(foldNat (\num->(\a -> unaHoja def)) (\n rec -> (\a-> igual a rec)) num ) arbol
     where
-        armando (Hoja v) rec n def = Hoja v
-        armando (Dos v h1 h2) rec n def = Dos v (truncar def (n-1) h1) (truncar def (n-1) h2)
-        armando (Tres v1 v2 h1 h2 h3) rec n def = Tres v1 v2 (truncar def (n-1) h1) (truncar def (n-1) h2) (truncar def (n-1) h3)
+        igual (Hoja v) rec  = Hoja v
+        igual (Dos v h1 h2) rec  = Dos v (rec h1) (rec h2)
+        igual (Tres v1 v2 h1 h2 h3) rec  = Tres v1 v2 (rec h1) (rec h2) (rec h3)
 
 
 --Evalúa las funciones tomando los valores de los hijos como argumentos.
