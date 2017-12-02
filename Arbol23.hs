@@ -67,10 +67,10 @@ incrementarHojas = mapA23 (+1) id
 --Funciona para árboles infinitos.
 
 --Para truncar se utilizo la recursión por los naturales
-foldNat::Num a => Eq a =>(a -> b) -> (a -> b -> b) -> a -> b
-foldNat = (\fBase fRec n -> case n of
-    0 -> fBase 0
-    n -> fRec n (foldNat fBase fRec (n-1)) )
+foldNat::Num a => Eq a => b -> (a -> b -> b) -> a -> b
+foldNat = (\ base fRec n -> case n of
+    0 -> base
+    n -> fRec n (foldNat base fRec (n-1)) )
 
 --Crea una arbol23 Hoja
 unaHoja::a->Arbol23 a b
@@ -78,7 +78,7 @@ unaHoja = \a -> (Hoja a)
 
 --trunco
 truncar::a->Integer->Arbol23 a b->Arbol23 a b
-truncar def num arbol =(foldNat (\num->(\a -> unaHoja def)) (\n rec -> (\a-> igual a rec)) num ) arbol
+truncar def num arbol =(foldNat (\a -> unaHoja def) (\n rec -> (\a-> igual a rec)) num ) arbol
     where
         igual (Hoja v) f  = Hoja v
         igual (Dos v h1 h2) f  = Dos v (f h1) (f h2)

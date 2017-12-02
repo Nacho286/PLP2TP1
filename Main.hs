@@ -36,7 +36,7 @@ diccVacio = (vacio (<))
 
 --arboles de prueba
 arbol1 = Tres 'A' 'B' (Hoja 1) (Dos 'C' (Hoja 2) (Hoja 3)) (Tres 'D' 'E' (Dos 'F' (Hoja 4) (Hoja 5)) (Hoja 6) (Hoja 7))
-
+arbolPrueba = Dos 'P' (Dos 'l' (Dos 'g' (Hoja 5) (Hoja 2)) (Tres 'r' 'a' (Hoja 0) (Hoja 1) (Hoja 12))) (Dos 'p' (Tres 'n' 'd' (Hoja (-3)) (Hoja 4) (Hoja 9)) (Dos 'e' (Hoja 20) (Hoja 7)))
 --Ejecución de los tests
 main :: IO Counts
 main = do runTestTT allTests
