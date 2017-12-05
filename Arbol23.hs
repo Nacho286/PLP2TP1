@@ -72,13 +72,9 @@ foldNat = (\ base fRec n -> case n of
     0 -> base
     n -> fRec n (foldNat base fRec (n-1)) )
 
---Crea una arbol23 Hoja
-unaHoja::a->Arbol23 a b
-unaHoja = \a -> (Hoja a)
-
 --trunco
 truncar::a->Integer->Arbol23 a b->Arbol23 a b
-truncar def num arbol =(foldNat (\a -> unaHoja def) (\n rec -> (\a-> igual a rec)) num ) arbol
+truncar def num arbol =(foldNat (const (Hoja def)) (\n rec -> (\a-> igual a rec)) num ) arbol
     where
         igual (Hoja v) f  = Hoja v
         igual (Dos v h1 h2) f  = Dos v (f h1) (f h2)

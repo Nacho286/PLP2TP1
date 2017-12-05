@@ -76,9 +76,10 @@ vacio::Comp clave->Diccionario clave valor
 vacio c= Dicc c Nothing
 
 definir::clave->valor->Diccionario clave valor->Diccionario clave valor
-definir c v d = if isNothing (estructura d) then Dicc (cmp d) (Just(Hoja(c,v))) else Dicc (cmp d) dicc
+definir c v d = maybe (hoja) (const(Dicc (cmp d) dicc)) (estructura d)
  where
-  dicc=(Just(insertar c v (cmp d) (fromJust (estructura d))))
+  hoja =Dicc (cmp d) (Just(Hoja(c,v)))
+  dicc=Just(insertar c v (cmp d) (fromJust (estructura d)))
 
 --Debido a la evalucion lazy solo se va a recorrer una rama, ya que en los if de la funcion "buscar" solo se va a computar la recursion que se necesaria
 obtener::Eq clave=>clave->Diccionario clave valor->Maybe valor
@@ -92,7 +93,9 @@ buscar cl comp = foldA23 f1 f2 f3
   f3 = \ x1 x2 rec1 rec2 rec3 -> if comp cl x1 then rec1 else (if comp cl x2 then rec2 else rec3)
 
 claves::Diccionario clave valor->[clave]
-claves d = if  isNothing(estructura d) then [] else map (\x->fst(x)) (hojas (fromJust (estructura d)))
+claves d = maybe [] funcion (estructura d)
+ where
+  funcion = \x -> map (\z->fst(z)) (hojas x)
 
 {- Diccionarios de prueba: -}
 
